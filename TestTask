@@ -1,0 +1,85 @@
+import java.util.Arrays;
+import java.util.Scanner;
+public class TestTask {
+    public static void main(String[] args) throws Exception {
+        int[] numbers = new int[100];
+        numbers[0] = 0;
+        for (int x = 1; x<numbers.length;x++ ){
+            numbers[x]=numbers[x-1] +1;
+        }
+        String numbers2 = Arrays.toString(numbers);
+        String[] ara =numbers2.substring(0,numbers2.length()-1).split(", ");
+        String[] roman = new String[]{"0","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+                                     "XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX",
+                                     "XXI","XXII","XXIII","XXIV","XXV","XXVI","XXVII", "XXVIII","XXIX","XXX",
+                                     "XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII", "XXXVIII","XXXIX","XL",
+                                     "XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L",
+                                     "LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX",
+                                     "LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX",
+                                     "LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX",
+                                     "LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC",
+                                     "XCI","XCII","XCIII","XCIV","XCV","XCVI","XCVII","XCVIII","XCIX","C",
+        };
+        Scanner s = new Scanner(System.in);
+        String string = s.nextLine();
+        String[] op = string.split(" ");
+        if (op.length ==1) throw new Exception("строка не является математической операцией");
+        if (op.length != 3) throw new Exception("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+        boolean romanAnswer = false;
+        if(contains(roman,op[0])&contains(roman,op[2])){
+            convert(op,roman,ara);
+            romanAnswer = true;
+        }
+        int a;
+        int b;
+        try{
+        a = Integer.parseInt(op[0]);
+        b = Integer.parseInt(op[2]);}
+        catch (Exception error) {
+            throw new Exception("Используются одновременно разные системы счисления");
+        }
+        if (a > 10 | b > 10) throw new Exception("Значение вне допустимого диапозона");
+        int res;
+        String operation = op[1];
+        char operation2 = operation.charAt(0);
+        switch (operation2) {
+            case '+' -> res = a + b;
+            case '-' -> res = a - b;
+            case '*' -> res = a * b;
+            case '/' -> res = a / b;
+            default -> throw new Exception("Неизвестный оператор");
+        }
+        if (romanAnswer) {
+            try {
+                System.out.println(roman[res]);
+            }
+            catch (Exception error2){
+                throw new Exception("В римской системе нет отрицательных чисел");
+            }
+        }
+        else System.out.println(res);
+
+    }
+    public static boolean contains(String[] mda,String k)
+    {
+        for (int count = 0; count < mda.length; count++)
+        {
+            if (mda[count].equals(k))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static void convert(String[] ops,String[] rom, String[] ar) {
+        for (int count = 0; count < rom.length; count++) {
+            if (rom[count].equals(ops[0])) {
+                ops[0] = ar[count];
+            }
+            if (rom[count].equals(ops[2])) {
+                ops[2] = ar[count];
+            }
+        }
+    }
+
+}
